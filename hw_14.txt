@@ -1,0 +1,46 @@
+CREATE TABLE department(
+	id SERIAL PRIMARY KEY,
+	company VARCHAR(32),
+	job_title VARCHAR(32)
+	);
+
+
+INSERT INTO department(company, job_title)
+VALUES('IT trend', 'Project Manager'),
+('IT trend', 'Recrutier'),
+ ('IT trend','Designer');
+
+
+CREATE TABLE pers_info(
+	id SERIAL PRIMARY KEY,
+	phone_number TEXT,
+	mail Text);
+
+
+INSERT INTO pers_info(phone_number, mail)
+VALUES('+ 686(4488)130-41-59939', 'kolya@gmail.com'), 
+('+ 163(8040)372-22-82067', 'vasya@gmail.com'),
+('+ 546(5615)183-51-85435', 'vadim@gmail.com');
+
+
+CREATE TABLE employee_1(
+	id SERIAL PRIMARY KEY,
+	first_name VARCHAR(32),
+	last_name VARCHAR(32),
+	pers_info_id INTEGER REFERENCES pers_info(id),
+	department_id INTEGER REFERENCES department(id));
+
+
+INSERT INTO employee_1(first_name, last_name, pers_info_id, department_id)
+VALUES
+('Nickolay', 'Korolev', 1, 1),
+('Vasiliy', 'Petrov',2, 2),
+('Vadim', 'Pasechnik', 3, 3);
+
+
+SELECT employee_1.first_name, employee_1.last_name, pers_info.phone_number, pers_info.mail,
+department.company, department.job_title
+FROM employee_1 JOIN pers_info
+	ON employee_1.pers_info_id = pers_info.id
+JOIN department
+	ON employee_1.department_id = department.id;
