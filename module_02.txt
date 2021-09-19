@@ -1,51 +1,87 @@
 CREATE TABLE book(
-	id SERIAL PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
 	book_name VARCHAR(32),
-	release_year INTEGER,
-	count_of_pages INTEGER,
-	category VARCHAR(10),
+	release_year DATE NOT NULL,
+	page_number INTEGER,
 	tags TEXT);
 
-INSERT INTO book(book_name, release_year, count_of_pages, category, tags)
+
+INSERT INTO book(book_name, release_year, page_number, tags)
 VALUES
-('Маленький Принц',2000,100,'Сказки','Фантасктика, детское, приключения'),
-('Три Товарища',2006,300,'Роман','Проза'),
-('Шантарм', 1990, 250, 'Роман', 'Приключения, проза');
+('1984', '1984-1-09', 300, 'Фантастика, Комиксы и Манга, Проза'),
+('Мастер и Маргарита', '2006-1-09',  200, 'Школьные учебники, Детская литература, Ужасы, Проза'),
+('Маленький принц', '2005-1-09', 200, 'Книги для дошкольников, Детская литература, Внеклассное чтение'),
+('Фаворит', '1984-1-09', 300, 'Проза');
+
+
+CREATE TABLE genre(
+	id SERIAL PRIMARY KEY,
+	genre_catalogue VARCHAR(32));
+
+
+INSERT INTO genre(genre_catalogue)
+VALUES
+('Сказка'),         
+('Новелла'),
+('Исторический Роман'),
+('Рассказ'),
+('Повесть'),
+('Драма'),
+('Комедия'),
+('Мелодрама'),
+('Трагедия'),
+('Трагикомедия'),
+('Сонет'),
+('Хроника'),
+('Роман');
 
 
 CREATE TABLE author(
 	id SERIAL PRIMARY KEY,
 	first_name VARCHAR(32),
 	last_name VARCHAR(32),
-	author_id INTEGER REFERENCES book(id));
+	genre_id INTEGER REFERENCES genre(id),
+	book_id INTEGER REFERENCES book(id));
 
 
-INSERT INTO author (first_name, last_name, author_id)
+INSERT INTO author(first_name, last_name, genre_id, book_id)
 VALUES
-('Антуан', 'Де Сент Экзюпери', 1),
-('Эрих Мария','Ремарк',2),
-('Дэвид','Робертс',3);
+('Джордж','Оруэл',12 ,1),
+('Михаил','Булгаков',12 ,2 ),
+('Антуан','де Сент-Экзюпери',1 ,3 ),
+('Валентин','Пикуль',13 ,4 );
 
 
-SELECT author.first_name, author.last_name, book.book_name, book.release_year, 
-book.count_of_pages, book.category, book.tags
-FROM author JOIN book
-	ON author_id = book.id;
+SELECT author.first_name, author.last_name, genre.genre_catalogue,
+book.book_name, book.release_year, book.page_number, book.tags 
+FROM author JOIN genre
+	ON author.genre_id = genre.id
+JOIN book
+	ON author.book_id = book.id
+
+/* Агрегаторы */
+
+SELECT 
+	genre.genre_catalogue, count(*)
+FROM 
+	author JOIN genre
+ON 
+	author.genre_id = genre.id
+GROUP BY 
+	genre.genre_catalogue;
 
 
-SELECT book_name, release_year 
-FROM book 
-WHERE release_year = 2000 
-GROUP BY book_name, release_year;
+SELECT 
+	release_year, COUNT(release_year) 
+FROM 
+	book
+GROUP BY 
+	release_year;
 
 
-SELECT book_name, category 
-FROM book 
-WHERE category = 'Сказки' 
-GROUP BY book_name, category;
-
-
-SELECT first_name, last_name 
-FROM author 
-WHERE first_name = 'Дэвид' AND last_name = 'Робертс'
-GROUP BY first_name, last_name;
+SELECT 
+	first_name || ' ' || last_name full_name, COUNT(*)
+FROM 
+	author
+GROUP BY 
+	full_name;
