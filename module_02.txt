@@ -1,0 +1,51 @@
+CREATE TABLE book(
+	id SERIAL PRIMARY KEY,
+	book_name VARCHAR(32),
+	release_year INTEGER,
+	count_of_pages INTEGER,
+	category VARCHAR(10),
+	tags TEXT);
+
+INSERT INTO book(book_name, release_year, count_of_pages, category, tags)
+VALUES
+('Маленький Принц',2000,100,'Сказки','Фантасктика, детское, приключения'),
+('Три Товарища',2006,300,'Роман','Проза'),
+('Шантарм', 1990, 250, 'Роман', 'Приключения, проза');
+
+
+CREATE TABLE author(
+	id SERIAL PRIMARY KEY,
+	first_name VARCHAR(32),
+	last_name VARCHAR(32),
+	author_id INTEGER REFERENCES book(id));
+
+
+INSERT INTO author (first_name, last_name, author_id)
+VALUES
+('Антуан', 'Де Сент Экзюпери', 1),
+('Эрих Мария','Ремарк',2),
+('Дэвид','Робертс',3);
+
+
+SELECT author.first_name, author.last_name, book.book_name, book.release_year, 
+book.count_of_pages, book.category, book.tags
+FROM author JOIN book
+	ON author_id = book.id;
+
+
+SELECT book_name, release_year 
+FROM book 
+WHERE release_year = 2000 
+GROUP BY book_name, release_year;
+
+
+SELECT book_name, category 
+FROM book 
+WHERE category = 'Сказки' 
+GROUP BY book_name, category;
+
+
+SELECT first_name, last_name 
+FROM author 
+WHERE first_name = 'Дэвид' AND last_name = 'Робертс'
+GROUP BY first_name, last_name;
