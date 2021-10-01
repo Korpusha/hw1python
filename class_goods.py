@@ -23,9 +23,9 @@ class Goods:
     def price_total(self):
         """
         Spot the price of the product depended upon its units.
-        If kg, then it`s default price
-        If 'by number', then it multiplies the price with its number
-        Also used to help method total in class Basket
+        If kg, then it`s default price.
+        If 'by number', then it multiplies the price with its number.
+        Also used to help method total in class Basket.
 
         """
         not_allowed_units = ('kg', 'kilogrammes', 'kilo', 'kilogram', 'kilogramme')
