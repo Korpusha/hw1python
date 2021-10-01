@@ -27,27 +27,28 @@ class Car(Vehicle):
     pass
 
 
-class Truck(Vehicle):
-    def __init__(self, model, color, max_speed, condition, material):
-        Vehicle.__init__(self, model, color, max_speed, condition)
-        self.material = material
-
+class Capacity:
     def capacity(self, length, width, height):
         truck_capacity = 2 * (length * width + length * height + width * height)
-        return f'Capacity is {truck_capacity} centimetres^2'
+        return f'Capacity is {truck_capacity/10000} meters^2'
 
+
+class Appointment:
     def appointment(self, city):
         return f'{self.color.title()} truck {self.model} was appointed to the city {city} to deliver ' \
                f'{self.material.lower()}.'
 
 
-my_car = Car('BMW', 'Red', 200, 'Factory new')
-bob_car = Car('Ford', 'Grey', 90, 'Good')
-bill_truck = Truck('Man', 'Black', 120, 'Old', 'Furniture')
+
+class Truck(Vehicle, Capacity, Appointment):
+    def __init__(self, model, color, max_speed, condition, material):
+        Vehicle.__init__(self, model, color, max_speed, condition)
+        self.material = material
 
 
-print(bill_truck.appointment('Vienna'))
-print(bill_truck.capacity(6, 4, 7))
-print(my_car.speed_check(100))
-print(bob_car.speed_check(100))
-print(my_car.to_go(60, 100))
+bill_truck = Truck('MAN', 'Black', 135, 'Bad', 'Fruits')
+
+print(bill_truck.capacity(100, 100, 200))
+
+print(bill_truck.speed_check(130))
+
