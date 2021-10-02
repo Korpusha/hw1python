@@ -2,7 +2,7 @@
 
 
 class Goods:
-    def __init__(self, price, name, unit_of_measurement, category):
+    def __init__(self, price, name, category, unit_of_measurement):
         self.price = price
         self.category = category
         self.name = name
@@ -13,10 +13,9 @@ class Goods:
         Checks the product on it`s edibility.
         Allowed only categories to check: 'supply', 'household chemistry', 'alcohol'
         Also used to help method totally_eatable in class Basket
-
         """
-        allowed_category = ('supply', 'household chemistry', 'alcohol')
-        if self.category in allowed_category and self.category != 'household chemistry':
+        allowed_categories = ('supply', 'household chemistry', 'alcohol')
+        if self.category in allowed_categories and self.category != 'household chemistry':
             return True
         return False
 
@@ -26,7 +25,6 @@ class Goods:
         If kg, then it`s default price
         If 'by number', then it multiplies the price with its number
         Also used to help method total in class Basket
-
         """
         not_allowed_units = ('kg', 'kilogrammes', 'kilo', 'kilogram', 'kilogramme')
         for i in self.unit_of_measurement.split():
@@ -37,7 +35,7 @@ class Goods:
             return self.price * our_num
 
 
-class Basket(Goods):
+class Basket:
     def __init__(self, what_in):
         self.what_in = what_in
 
